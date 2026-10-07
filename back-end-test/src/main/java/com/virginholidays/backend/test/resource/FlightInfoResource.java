@@ -3,6 +3,7 @@ package com.virginholidays.backend.test.resource;
 import com.virginholidays.backend.test.api.Flight;
 import com.virginholidays.backend.test.service.FlightInfoService;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.CompletionStage;
 import javax.validation.constraints.NotEmpty;
@@ -43,7 +44,10 @@ public class FlightInfoResource {
     @RequestMapping(method = RequestMethod.GET, path = "/{date}/results")
     public CompletionStage<ResponseEntity<?>> getResults(@PathVariable("date") @NotEmpty String date) {
 
-        return flightInfoService.findFlightByDate(LocalDate.now()).thenApply(maybeResults -> {
+        // Parse the date parameter in ISO format (yyyy-MM-dd)
+        LocalDate outboundDate = LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
+        
+        return flightInfoService.findFlightByDate(outboundDate).thenApply(maybeResults -> {
 
             // no results, no content
             if (maybeResults.isEmpty()) {
