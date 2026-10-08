@@ -69,8 +69,8 @@ class FlightInfoServiceImplTest {
         // assert - Should return flights that operate on Sunday
         assertThat(result.isPresent(), equalTo(true));
         assertThat(result.get(), hasSize(2)); // Las Vegas (all days) and Barbados (weekends)
-        assertThat(result.get().get(0).flightNo(), equalTo("VS044")); // Las Vegas
-        assertThat(result.get().get(1).flightNo(), equalTo("VS029")); // Barbados
+        assertThat(result.get().get(0).flightNo(), equalTo("VS029")); // Las Vegas
+        assertThat(result.get().get(1).flightNo(), equalTo("VS044")); // Barbados
     }
 
     @Test

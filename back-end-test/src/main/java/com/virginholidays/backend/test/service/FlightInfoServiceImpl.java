@@ -4,6 +4,7 @@ import com.virginholidays.backend.test.api.Flight;
 import com.virginholidays.backend.test.repository.FlightInfoRepository;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 import org.springframework.stereotype.Service;
@@ -31,9 +32,10 @@ public class FlightInfoServiceImpl implements FlightInfoService {
     public CompletionStage<Optional<List<Flight>>> findFlightByDate(LocalDate outboundDate) {
 
         // Filter flights by the day of week for the given date
-        return flightInfoRepository.findAll().thenApply(maybeFlights -> 
+        return flightInfoRepository.findAll().thenApply(maybeFlights ->
             maybeFlights.map(flights -> flights.stream()
                 .filter(flight -> flight.days().contains(outboundDate.getDayOfWeek()))
+                .sorted(Comparator.comparing(Flight::departureTime))
                 .toList()
             )
         );
